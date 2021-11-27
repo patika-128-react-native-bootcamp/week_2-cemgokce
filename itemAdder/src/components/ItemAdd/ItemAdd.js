@@ -1,19 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {View, Text, TextInput, Button} from 'react-native';
 
 import styles from './ItemAdd.style';
 
-const ItemAdd = props => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(null);
+const ItemAdd = ({setItems, Items}) => {
+  const nameRef = useRef(null);
+  const priceRef = useRef(null);
+
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
 
   const submitHandler = () => {
-     console.log('SubmitHandler logged.');
-     const id = Math.random().toString();
-    // const date = Date.now();
-    // console.log(date);
-     const newData ={id,name,price}
-    props.onAddItem(newData);
+    if (!name || !price) {
+      return;
+    }
+    const id = Math.random().toString();
+    const date = Date.now();
+    const newItem = {id, name, price, date};
+    const newItems = [...Items, newItem];
+    setItems(newItems);
   };
 
   return (
@@ -21,18 +26,18 @@ const ItemAdd = props => {
       <View>
         <Text>Name</Text>
         <TextInput
+          ref={nameRef}
           placeHolder="Name"
-          onChange={setName}
-          value={name}
+          onChangeText={setName}
           style={styles.text}
         />
       </View>
       <View>
         <Text>Price</Text>
         <TextInput
+          ref={priceRef}
           placeHolder="Price"
           onChangeText={setPrice}
-          value={price}
           style={styles.text}
         />
       </View>

@@ -1,18 +1,19 @@
 import React, {useEffect} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import Item from './Item/Item';
+import styles from './Items.style';
 
 const ItemsComponent = ({Items}) => {
-  useEffect(() => {
-    console.log('UseEffect First Item Log' + Items[0].name);
-  }, [Items]);
-
+  const seperator = () => {
+    return <View style={styles.seperator} />;
+  };
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
+        ItemSeparatorComponent={seperator}
         data={Items}
-        renderItem={value => {
-          return <Item ItemValue={value} />;
+        renderItem={({item}) => {
+          return <Item ItemValue={item} />;
         }}
       />
     </View>

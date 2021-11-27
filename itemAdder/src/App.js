@@ -1,37 +1,45 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-  FlatList,
-  Switch,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import Filter from './components/Badge/Filter';
 import ItemsComponent from './components/Items/ItemsComponent';
 import ItemAdd from './components/ItemAdd/ItemAdd';
 
 const App = () => {
-  const [Items, setItems] = useState([{id: 1, name: 'denemeItem', price: 15}]);
-
-  const oonAddItem = newData => {
-    console.log('geldi' + newData.name);
-    setItems([...Items, newData]);
-
-    console.log('App Component:' + Items[0].name);
-  };
+  const [Items, setItems] = useState([]);
+  const [FilterType, setFilterType] = useState('date');
+  console.log(FilterType);
+  useEffect(() => {
+    switch (setFilterType) {
+      case 'date':
+        setItems(Items.sort((a, b) => a.date - b.date));
+        break;
+      case 'descending':
+        setItems(Items.sort((a, b) => a.price - b.price));
+        break;
+      case 'ascending':
+        setItems(Items.sort((a, b) => b.price - a.price));
+        break;
+    }
+  }, [Items,FilterType]);
 
   return (
-    <SafeAreaView>
-      <Filter />
+    <SafeAreaView style={styles.main_container}>
+      <Filter
+        Items={Items}
+        setItems={setItems}
+        filterType={FilterType}
+        setFilterType={setFilterType}
+      />
       <ItemsComponent Items={Items} />
-      <ItemAdd onAddItem={oonAddItem} />
+      <ItemAdd Items={Items} setItems={setItems} />
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  main_container: {
+    flex: 1,
+  },
+});
 
 export default App;
