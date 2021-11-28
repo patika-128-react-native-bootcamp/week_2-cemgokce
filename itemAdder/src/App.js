@@ -7,21 +7,20 @@ import ItemAdd from './components/ItemAdd/ItemAdd';
 const App = () => {
   const [Items, setItems] = useState([]);
   const [FilterType, setFilterType] = useState('date');
-  console.log(FilterType);
+
   useEffect(() => {
-    switch (setFilterType) {
+    switch (FilterType) {
       case 'date':
         setItems(Items.sort((a, b) => a.date - b.date));
         break;
-      case 'descending':
+      case 'ascending':
         setItems(Items.sort((a, b) => a.price - b.price));
         break;
-      case 'ascending':
+      case 'descending':
         setItems(Items.sort((a, b) => b.price - a.price));
         break;
     }
-  }, [Items,FilterType]);
-
+  }, [Items]);
   return (
     <SafeAreaView style={styles.main_container}>
       <Filter
